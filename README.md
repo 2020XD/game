@@ -24,9 +24,10 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 
 > also come up with a good name for the game & refactor the placeholder in the src
 
-tidy readme
+> also tidy readme
+
+changelog
 =====
 
-> changelog for my friend daniel
 - commit #1 as of 26 apr 18 - uploaded libgdx generated base && created todo list
 - commit #2 as of 27 apr 18 - added "working" screens for now with a logo i got from google
