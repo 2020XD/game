@@ -14,7 +14,7 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 - [ ] Inputs
 - [ ] Upgrades
 - [ ] World Generation
-- [ ] Main menu screen
+- [x] Main menu screen
 - [ ] Settings
 - [ ] Collision
 - [ ] Camera
@@ -31,4 +31,5 @@ changelog
 
 - commit #1 as of 26 apr 18 - uploaded libgdx generated base && created todo list
 - commit #2 as of 27 apr 18 - added "working" screens for now with a logo i got from google
-- commit #3 as of 27 apr 18 - added outline of how entities should be handled and looked into box2d with a tutorial
+- commit #3 as of 27 apr 18 - added outline of entity handling, tested out box2d with tutorials, mainmenu added movement with mouse input, stats outline && fullscreen on F11
+
