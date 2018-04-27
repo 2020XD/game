@@ -1,26 +1,42 @@
 package me.placeholder.game.entity.impl;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.*;
 import me.placeholder.game.entity.Entity;
 
 /**
  * @author Adrian on 4/27/2018
  */
-public class EntityPlayer implements Entity {
-    private Texture texture;
+public abstract class EntityPlayer implements Entity {
 
-    public EntityPlayer(Texture texture) {
-        this.texture = texture;
+    /**
+     * TODO: stats
+     */
+    protected Body body;
+
+    public EntityPlayer(World world) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set(0, 0);
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        body = world.createBody(bodyDef);
+
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(32, 32);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygonShape;
+        body.createFixture(fixtureDef);
     }
 
     @Override
     public void update() {
-
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-//        spriteBatch.draw(texture );
+    }
+
+    public Body getBody() {
+        return body;
     }
 }

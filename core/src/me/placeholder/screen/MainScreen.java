@@ -2,7 +2,6 @@ package me.placeholder.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.PlaceholderGame;
 
-import static me.placeholder.utils.TexturesManager.*;
+import static me.placeholder.utils.TexturesManager.playButtonTexture;
 
 /**
  * Created by Adrian on 27/04/2018.
@@ -24,12 +23,15 @@ public class MainScreen implements Screen {
     private Stage stage;
     private ImageButton playButton;
     private OrthographicCamera camera;
+    private PlaceholderGame game;
 
     private Table buttonTable;
 
     private int centerX, centerY;
 
+
     public MainScreen(final PlaceholderGame game) {
+        this.game = game;
         centerX = Gdx.graphics.getWidth() / 2;
         centerY = Gdx.graphics.getHeight() / 2;
 
@@ -58,9 +60,16 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        camera.position.set(new float[]{centerX + Gdx.input.getX() / 200, centerY + Gdx.input.getY() / 200, 0});
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
+        /**
+         * crosshair using textures
+         * advantage - rotates
+         * disadvantage - updates with fps
+         */
+//        game.batch.begin();
+//        game.batch.draw(crosshairTexture, getMouse().x, getMouse().y);
+//        game.batch.end();
+
+        camera.position.set(centerX + Gdx.input.getX() / 100, centerY + Gdx.input.getY() / 100, 0);
         stage.act();
         stage.draw();
     }
@@ -92,6 +101,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
+        playButtonTexture.dispose();
         stage.dispose();
     }
 }
