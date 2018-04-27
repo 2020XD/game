@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.PlaceholderGame;
 
 /**
- * Created by AwfaZ on 27/04/2018.
+ * Created by Adrian on 27/04/2018.
  */
 public class MainScreen implements Screen {
 
