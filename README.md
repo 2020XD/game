@@ -6,6 +6,7 @@ using https://libgdx.badlogicgames.com/
 and my fake friend daniel
 
 ### todo
+=====
 - [ ] Graphics
 - [ ] Animations
 - [ ] Lighting
