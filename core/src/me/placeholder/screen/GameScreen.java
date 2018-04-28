@@ -19,11 +19,6 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         platform.update();
         platform.render();
@@ -31,26 +26,26 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        platform.resize(width, height);
+    }
 
+    @Override
+    public void show() {
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 }

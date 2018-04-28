@@ -7,7 +7,7 @@ package me.placeholder.game.stats;
 public class Stats {
 
     private int playerHealth;
-
+    private int attackRadius;
     private int movementSpeed;
 
     public Stats() {
