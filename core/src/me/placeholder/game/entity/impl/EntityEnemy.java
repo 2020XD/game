@@ -8,7 +8,7 @@ import me.placeholder.game.entity.Entity;
  */
 public abstract class EntityEnemy implements Entity {
 
-    /**
+    /**ddddd
      * TODO: Stats
      */
 

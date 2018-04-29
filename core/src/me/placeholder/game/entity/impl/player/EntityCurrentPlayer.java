@@ -19,20 +19,22 @@ public class EntityCurrentPlayer extends EntityPlayer {
     /**
      * TODO: stats
      */
-    private int movementSpeed = 5;
-    OrthographicCamera camera;
+    private int movementSpeed = 100;
     private float angle = 0;
     private Vector2 delta;
     private RayHandler rayHandler;
+    private OrthographicCamera camera;
 
     public EntityCurrentPlayer(World world, OrthographicCamera camera) {
         super(world);
         this.camera = camera;
         delta = new Vector2();
+
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
-        PointLight pointLight = new PointLight(rayHandler, 100, Color.WHITE, 400, 0, 0);
+        PointLight pointLight = new PointLight(rayHandler, 100, Color.WHITE, 150, 0, 0);
         pointLight.attachToBody(body);
+        body.setLinearDamping(0);
     }
 
     @Override
@@ -47,20 +49,22 @@ public class EntityCurrentPlayer extends EntityPlayer {
     }
 
     public void moveBody() {
-        delta = body.getPosition();
+        body.setLinearVelocity(delta.setZero());
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             delta.y += movementSpeed;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            delta.x += -movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             delta.y += -movementSpeed;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            delta.x += -movementSpeed;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             delta.x += movementSpeed;
         }
-        body.setTransform(delta, angle);
+        body.setLinearVelocity(delta);
+
+        body.setTransform(body.getPosition(), angle);
     }
 
     public void lookMouse(float mouseX, float mouseY) {

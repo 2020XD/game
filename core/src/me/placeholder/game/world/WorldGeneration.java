@@ -5,4 +5,9 @@ package me.placeholder.game.world;
  * TODO: generate worlds
  */
 public class WorldGeneration {
+
+    public void createWorld() {
+
+    }
+
 }

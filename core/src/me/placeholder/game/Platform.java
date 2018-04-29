@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
+import me.placeholder.game.world.WorldBodies;
 
 import java.util.ArrayList;
 
@@ -33,6 +36,8 @@ public class Platform {
 
     private ScreenViewport viewport;
 
+    private long startTime;
+
     public Platform(SpriteBatch spriteBatch) {
         this.spriteBatch = spriteBatch;
         entities = new ArrayList();
@@ -45,12 +50,9 @@ public class Platform {
 
         player = new EntityCurrentPlayer(world, camera);
 
-        BodyDef ground = new BodyDef();
-        ground.position.set(0, -10);
-        Body groundBody = world.createBody(ground);
-        PolygonShape groundShape = new PolygonShape();
-        groundShape.setAsBox(1000, 3.0f);
-        groundBody.createFixture(groundShape, 0f);
+        WorldBodies.createWall(world, 0, 0, 1000, 3);
+
+        startTime = TimeUtils.millis();
     }
 
     private Vector3 getMousePosCamera() {
@@ -73,6 +75,16 @@ public class Platform {
         cameraUpdate();
         player.lookMouse(getMousePosCamera().x, getMousePosCamera().y);
         player.update();
+
+
+        /**
+         * Zoom in
+         */
+        if (TimeUtils.timeSinceMillis(startTime) > 5000) {
+            if ((int) (camera.zoom * 1000) > 400f) {
+                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.4f, 0.03f);
+            }
+        }
     }
 
     public void render() {
