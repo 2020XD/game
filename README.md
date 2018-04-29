@@ -10,17 +10,25 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 - [ ] Graphics
 - [ ] Animations
 - [ ] Lighting
-- [x] Movements
 - [ ] Inputs (Combat)
 - [ ] World Generation
-- [x] Main menu screen
+
+- [ ] Main Screen
+- [ ] Option Screen
+- [ ] Play Screen
+
 - [ ] Settings
 - [ ] Collision
 - [ ] Sound
 - [ ] Local Multiplayer
 - [ ] Effects
+
+- [x] Camera Zoom
 - [ ] Camera Shake
 - [x] Camera Interpolation
+
+- [x] Movements
+- [ ] Fix movement speed
 - [ ] Enemies
 - [ ] Stats
 - [ ] Items (Upgradable and Collectibles)
@@ -28,7 +36,7 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 
 > also come up with a good name for the game & refactor the placeholder in the src && tidy readme
 
-changelog
+changelog for daniel
 =====
 
 - commit #1 as of 26 apr 18 - uploaded libgdx generated base && created todo list
@@ -36,3 +44,4 @@ changelog
 - commit #3 as of 27 apr 18 - added outline of entity handling, tested out box2d with tutorials, mainmenu added movement with mouse input, stats outline && fullscreen on F11
 - commit #4 as of 27 apr 18 - camera interpolation, crosshair and follows the player now.
 - commit #5 as of 28 apr 18 - fixed camera, player now rotates with mouse and played around with light.
+- commit #6 as of 29 apr 18 - added camera zoom with countdown, fixed movement and collision with walls.
