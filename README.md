@@ -11,22 +11,19 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 - [ ] Animations
 - [ ] Lighting
 - [ ] Inputs (Combat)
-- [ ] World Generation
-
+- [ ] World
+- [ ] Procedural Generation for world
 - [ ] Main Screen
 - [ ] Option Screen
 - [ ] Play Screen
-
 - [ ] Settings
 - [ ] Collision
 - [ ] Sound
 - [ ] Local Multiplayer
 - [ ] Effects
-
 - [x] Camera Zoom
 - [ ] Camera Shake
 - [x] Camera Interpolation
-
 - [x] Movements
 - [ ] Fix movement speed
 - [ ] Enemies
