@@ -24,7 +24,7 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 - [ ] Enemies
 - [ ] Stats
 - [ ] Items (Upgradable and Collectibles)
-- [x] Crosshair
+- [x] Crosshair 
 
 > also come up with a good name for the game & refactor the placeholder in the src && tidy readme
 
@@ -35,3 +35,4 @@ changelog
 - commit #2 as of 27 apr 18 - added "working" screens for now with a logo i got from google
 - commit #3 as of 27 apr 18 - added outline of entity handling, tested out box2d with tutorials, mainmenu added movement with mouse input, stats outline && fullscreen on F11
 - commit #4 as of 27 apr 18 - camera interpolation, crosshair and follows the player now.
+- commit #5 as of 28 apr 18 - fixed camera, player now rotates with mouse and played around with light.
