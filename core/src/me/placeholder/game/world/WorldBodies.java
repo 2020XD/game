@@ -1,6 +1,7 @@
 package me.placeholder.game.world;
 
 import com.badlogic.gdx.physics.box2d.*;
+import me.placeholder.game.entity.Entity;
 
 public class WorldBodies {
 
@@ -14,7 +15,7 @@ public class WorldBodies {
         return body;
     }
 
-    public static Body createEntityBody(World world, float x, float y, float width, float height) {
+    public static Body createEntityBody(Entity entity, World world, float x, float y, float width, float height) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(x, y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -24,6 +25,7 @@ public class WorldBodies {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = polygonShape;
         body.createFixture(fixtureDef);
+        body.setUserData(entity);
         return body;
     }
 

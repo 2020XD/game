@@ -22,7 +22,7 @@ public class EntityCurrentPlayer extends Entity {
     private OrthographicCamera camera;
 
     public EntityCurrentPlayer(World world, OrthographicCamera camera) {
-        super(world, 8, 8);
+        createBody(this, world, 8, 8);
         this.camera = camera;
         delta = new Vector2();
 

@@ -18,7 +18,6 @@ public class Sword extends Item {
     @Override
     public void onClick(int id, Entity entity) {
         if (id == 0) {
-            entity
         }
     }
 }
