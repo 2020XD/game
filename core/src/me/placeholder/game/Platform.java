@@ -48,7 +48,7 @@ public class Platform {
         player = new EntityCurrentPlayer(world, camera);
 
         WorldBodies.createWall(world, 0, 0, 1000, 3);
-
+        //t
         startTime = TimeUtils.millis();
 
         getEntites();
