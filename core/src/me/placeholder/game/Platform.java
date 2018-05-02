@@ -8,14 +8,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldBodies;
+
+import java.util.Arrays;
 
 /**
  * Created by Adrian on 27/04/2018.
@@ -93,7 +97,22 @@ public class Platform {
         viewport.update(width, height);
     }
 
-    public List<Entity> getEntites() {
+    /**
+     * replace with java8 streams
+     * @return
+     */
+    public Array<Body> getEntites() {
+        Array<Body> worldBodies = new Array<Body>();
+        Array<Body> entityBodies = new Array<Body>();
+
+        world.getBodies(worldBodies);
+
+        for (int i = 0 ; i < worldBodies.size; i++) {
+            if (worldBodies.get(i).getUserData() instanceof Entity) {
+                entityBodies.add(worldBodies.get(i));
+            }
+        }
+        return entityBodies;
     }
 
 }

@@ -16,11 +16,11 @@ public abstract class Entity {
     protected Body body;
 
     public Entity() {
+        stats = new Stats();
     }
 
-    public Entity(World world, int sizeX, int sizeY) {
+    public void createBody(World world, int sizeX, int sizeY) {
         body = WorldBodies.createEntityBody(world, 0, 0, sizeX, sizeY);
-        stats = new Stats();
     }
 
     public abstract void update();

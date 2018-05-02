@@ -1,6 +1,7 @@
 package me.placeholder.game.entity.impl.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.World;
 import me.placeholder.game.entity.Entity;
 
 /**
@@ -12,7 +13,8 @@ public class EntityOtherPlayer extends Entity {
      * TODO: stats
      */
 
-    public EntityOtherPlayer() {
+    public EntityOtherPlayer(World world) {
+        createBody(world, 8, 8);
 
     }
 
