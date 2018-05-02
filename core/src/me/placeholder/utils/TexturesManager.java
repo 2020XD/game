@@ -1,6 +1,5 @@
 package me.placeholder.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -15,8 +14,8 @@ public class TexturesManager {
 
     static {
         playButtonTexture = new Texture("textures/gui/playbutton.png");
-        crosshair1Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair1.png"));
-        crosshair2Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair2.png"));
+//        crosshair1Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair1.png"));
+//        crosshair2Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair2.png"));
 
     }
 }

@@ -10,13 +10,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldBodies;
-
-import java.util.ArrayList;
 
 /**
  * Created by Adrian on 27/04/2018.
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 public class Platform {
 
     private SpriteBatch spriteBatch;
-
-    private ArrayList<Entity> entities;
 
     private EntityCurrentPlayer player;
 
@@ -40,7 +37,6 @@ public class Platform {
 
     public Platform(SpriteBatch spriteBatch) {
         this.spriteBatch = spriteBatch;
-        entities = new ArrayList();
         renderer = new Box2DDebugRenderer();
         logger = new FPSLogger();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -76,7 +72,6 @@ public class Platform {
         player.lookMouse(getMousePosCamera().x, getMousePosCamera().y);
         player.update();
 
-
         /**
          * Zoom in
          */
@@ -96,6 +91,9 @@ public class Platform {
 
     public void resize(int width, int height) {
         viewport.update(width, height);
+    }
+
+    public List<Entity> getEntites() {
     }
 
 }

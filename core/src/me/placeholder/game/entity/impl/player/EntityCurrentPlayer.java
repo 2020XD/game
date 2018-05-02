@@ -9,32 +9,41 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import me.placeholder.game.entity.impl.EntityPlayer;
+import me.placeholder.game.entity.Entity;
+import me.placeholder.utils.MathUtils;
 
 /**
  * @author Adrian on 4/27/2018
  */
-public class EntityCurrentPlayer extends EntityPlayer {
+public class EntityCurrentPlayer extends Entity {
 
-    /**
-     * TODO: stats
-     */
-    private int movementSpeed = 100;
-    private float angle = 0;
     private Vector2 delta;
     private RayHandler rayHandler;
     private OrthographicCamera camera;
 
     public EntityCurrentPlayer(World world, OrthographicCamera camera) {
-        super(world);
+        super(world, 8, 8);
         this.camera = camera;
         delta = new Vector2();
 
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
-        PointLight pointLight = new PointLight(rayHandler, 100, Color.WHITE, 150, 0, 0);
+        PointLight pointLight = new PointLight(rayHandler, 50, Color.WHITE, stats.getAttackRadius(), 0, 0);
         pointLight.attachToBody(body);
         body.setLinearDamping(0);
+    }
+
+    @Override
+    public void attack(Entity entity) {
+        /** check is in range */
+        if (MathUtils.getDistanceBetweenPositions(entity.getBody().getPosition(), body.getPosition()) <= stats.getAttackRadius()) {
+            /** check if the angle is similar */
+            if ((int) getBody().getAngle() == MathUtils.getAngleBetweenPositions(getBody().getPosition(), entity.getBody().getPosition())) {
+                /** attacking state */
+                /** send attack packet for multiplayer */
+                entity.damage(this, stats.getItem());
+            }
+        }
     }
 
     @Override
@@ -51,23 +60,21 @@ public class EntityCurrentPlayer extends EntityPlayer {
     public void moveBody() {
         body.setLinearVelocity(delta.setZero());
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            delta.y += movementSpeed;
+            delta.y += stats.getMovementSpeed();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            delta.y += -movementSpeed;
+            delta.y += -stats.getMovementSpeed();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            delta.x += -movementSpeed;
+            delta.x += -stats.getMovementSpeed();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            delta.x += movementSpeed;
+            delta.x += stats.getMovementSpeed();
         }
         body.setLinearVelocity(delta);
-
-        body.setTransform(body.getPosition(), angle);
     }
 
     public void lookMouse(float mouseX, float mouseY) {
-        angle = (float) Math.atan((mouseY - body.getPosition().y) / (mouseX - body.getPosition().x));
+        setAngle((float) Math.atan((mouseY - body.getPosition().y) / (mouseX - body.getPosition().x)));
     }
 }

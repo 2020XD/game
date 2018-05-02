@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import me.placeholder.screen.MainScreen;
-import me.placeholder.utils.TexturesManager;
 
 public class PlaceholderGame extends Game {
 
@@ -19,13 +18,13 @@ public class PlaceholderGame extends Game {
 
     @Override
     public void create() {
-        open = Gdx.graphics.newCursor(TexturesManager.crosshair1Texture, TexturesManager.crosshair1Texture.getWidth() / 2, TexturesManager.crosshair1Texture.getHeight() / 2);
-        close = Gdx.graphics.newCursor(TexturesManager.crosshair2Texture, TexturesManager.crosshair2Texture.getWidth() / 2, TexturesManager.crosshair2Texture.getHeight() / 2);
+//        open = Gdx.graphics.newCursor(TexturesManager.crosshair1Texture, TexturesManager.crosshair1Texture.getWidth() / 2, TexturesManager.crosshair1Texture.getHeight() / 2);
+//        close = Gdx.graphics.newCursor(TexturesManager.crosshair2Texture, TexturesManager.crosshair2Texture.getWidth() / 2, TexturesManager.crosshair2Texture.getHeight() / 2);
         batch = new SpriteBatch();
         /**
          * Empty crosshair to replace with our own
          */
-        Gdx.graphics.setCursor(close);
+//        Gdx.graphics.setCursor(close);
 
         setScreen(new MainScreen(this));
     }
@@ -46,12 +45,12 @@ public class PlaceholderGame extends Game {
             else
                 Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            Gdx.graphics.setCursor(open);
-            clicked = true;
-        } else if (clicked) {
-            Gdx.graphics.setCursor(close);
-        }
+//        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+//            Gdx.graphics.setCursor(open);
+//            clicked = true;
+//        } else if (clicked) {
+//            Gdx.graphics.setCursor(close);
+//        }
     }
 
 }
