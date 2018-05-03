@@ -1,6 +1,6 @@
 package me.placeholder.game.stats.powerup.impl;
 
-import me.placeholder.game.entity.Entity;
+import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.stats.powerup.Item;
 import me.placeholder.game.stats.powerup.ItemType;
 
@@ -16,8 +16,17 @@ public class Sword extends Item {
     }
 
     @Override
-    public void onClick(int id, Entity entity) {
+    public void onClick(int id, EntityCurrentPlayer holder) {
+        /**
+         * todo delay
+         */
         if (id == 0) {
+            holder.attack();
         }
+    }
+
+    @Override
+    public void render() {
+
     }
 }

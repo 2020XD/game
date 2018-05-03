@@ -1,6 +1,6 @@
 package me.placeholder.game.stats.powerup;
 
-import me.placeholder.game.entity.Entity;
+import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 
 /**
  * @author Adrian on 4/27/2018
@@ -28,8 +28,11 @@ public abstract class Item {
     /**
      * activation on mouse click
      */
-    public void onClick(int id, Entity entity) {
+    public void onClick(int id, EntityCurrentPlayer holder) {
     }
+
+
+    public abstract void render();
 
     public String getItemName() {
         return itemName;

@@ -15,7 +15,7 @@ public class GameScreen implements Screen {
     private Platform platform;
 
     public GameScreen(PlaceholderGame game) {
-        platform = new Platform(game.batch);
+        platform = Platform.get();
     }
 
     @Override
