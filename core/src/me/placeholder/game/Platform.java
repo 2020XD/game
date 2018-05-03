@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -19,28 +18,22 @@ import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldBodies;
 
-import java.util.Arrays;
-
 /**
  * Created by Adrian on 27/04/2018.
  */
 public class Platform {
 
-    private SpriteBatch spriteBatch;
-
+    private final static Platform INSTANCE = new Platform();
+    private SpriteBatch spriteBatch = new SpriteBatch();
     private EntityCurrentPlayer player;
-
     private World world;
     private OrthographicCamera camera;
     private Box2DDebugRenderer renderer;
     private FPSLogger logger;
-
     private ScreenViewport viewport;
-
     private long startTime;
 
-    public Platform(SpriteBatch spriteBatch) {
-        this.spriteBatch = spriteBatch;
+    public Platform() {
         renderer = new Box2DDebugRenderer();
         logger = new FPSLogger();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -48,11 +41,15 @@ public class Platform {
 
         world = new World(new Vector2(0, 0), false);
 
-        player = new EntityCurrentPlayer(world, camera);
+        player = new EntityCurrentPlayer(world);
 
         WorldBodies.createWall(world, 0, 0, 1000, 3);
 
         startTime = TimeUtils.millis();
+    }
+
+    public static Platform get() {
+        return INSTANCE;
     }
 
     private Vector3 getMousePosCamera() {
@@ -73,15 +70,16 @@ public class Platform {
         logger.log();
 
         cameraUpdate();
-        player.lookMouse(getMousePosCamera().x, getMousePosCamera().y);
+        Vector3 cameraPos = getMousePosCamera();
+        player.lookMouse(cameraPos.x, cameraPos.y);
         player.update();
 
         /**
          * Zoom in
          */
         if (TimeUtils.timeSinceMillis(startTime) > 5000) {
-            if ((int) (camera.zoom * 1000) > 400f) {
-                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.4f, 0.03f);
+            if ((int) (camera.zoom * 1000) > 600f) {
+                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.6f, 0.03f);
             }
         }
     }
@@ -89,7 +87,7 @@ public class Platform {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
-        player.render(spriteBatch);
+        player.render();
         renderer.render(world, camera.combined);
     }
 
@@ -97,22 +95,22 @@ public class Platform {
         viewport.update(width, height);
     }
 
-    /**
-     * replace with java8 streams
-     * @return
-     */
     public Array<Body> getEntites() {
         Array<Body> worldBodies = new Array<Body>();
         Array<Body> entityBodies = new Array<Body>();
-
         world.getBodies(worldBodies);
-
-        for (int i = 0 ; i < worldBodies.size; i++) {
-            if (worldBodies.get(i).getUserData() instanceof Entity) {
-                entityBodies.add(worldBodies.get(i));
+        for (Body body : worldBodies)
+            if (body.getUserData() instanceof Entity) {
+                entityBodies.add(body);
             }
-        }
         return entityBodies;
     }
 
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 }

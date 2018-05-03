@@ -5,12 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import me.placeholder.screen.MainScreen;
 
 public class PlaceholderGame extends Game {
-
-    public SpriteBatch batch;
 
     Cursor open;
     Cursor close;
@@ -20,7 +17,6 @@ public class PlaceholderGame extends Game {
     public void create() {
 //        open = Gdx.graphics.newCursor(TexturesManager.crosshair1Texture, TexturesManager.crosshair1Texture.getWidth() / 2, TexturesManager.crosshair1Texture.getHeight() / 2);
 //        close = Gdx.graphics.newCursor(TexturesManager.crosshair2Texture, TexturesManager.crosshair2Texture.getWidth() / 2, TexturesManager.crosshair2Texture.getHeight() / 2);
-        batch = new SpriteBatch();
         /**
          * Empty crosshair to replace with our own
          */
