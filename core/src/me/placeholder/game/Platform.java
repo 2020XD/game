@@ -11,12 +11,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldBodies;
+
+import java.util.Arrays;
 
 /**
  * Created by Adrian on 27/04/2018.
@@ -48,10 +51,8 @@ public class Platform {
         player = new EntityCurrentPlayer(world, camera);
 
         WorldBodies.createWall(world, 0, 0, 1000, 3);
-        //t
-        startTime = TimeUtils.millis();
 
-        getEntites();
+        startTime = TimeUtils.millis();
     }
 
     private Vector3 getMousePosCamera() {
@@ -96,17 +97,22 @@ public class Platform {
         viewport.update(width, height);
     }
 
+    /**
+     * replace with java8 streams
+     * @return
+     */
     public Array<Body> getEntites() {
-        Array<Body> bodyArray = new Array();
-        world.getBodies(bodyArray);
+        Array<Body> worldBodies = new Array<Body>();
+        Array<Body> entityBodies = new Array<Body>();
 
-        for (int i = 0; i < bodyArray.size; i++) {
-            if (!(bodyArray.get(i).getUserData() instanceof Entity)) {
-                System.out.println("removed " + i);
-                bodyArray.removeIndex(i);
+        world.getBodies(worldBodies);
+
+        for (int i = 0 ; i < worldBodies.size; i++) {
+            if (worldBodies.get(i).getUserData() instanceof Entity) {
+                entityBodies.add(worldBodies.get(i));
             }
         }
-        return bodyArray;
+        return entityBodies;
     }
 
 }

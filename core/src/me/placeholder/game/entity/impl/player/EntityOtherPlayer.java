@@ -14,7 +14,8 @@ public class EntityOtherPlayer extends Entity {
      */
 
     public EntityOtherPlayer(World world) {
-        createBody(this, world, 8, 8);
+        createBody(world, 8, 8);
+
     }
 
     @Override
