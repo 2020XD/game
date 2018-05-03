@@ -1,6 +1,7 @@
 package me.placeholder.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,6 +18,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldBodies;
+import me.placeholder.game.world.WorldGeneration;
+import me.placeholder.game.world.tile.TileData;
+
+import java.util.ArrayList;
 
 /**
  * Created by Adrian on 27/04/2018.
@@ -24,6 +29,10 @@ import me.placeholder.game.world.WorldBodies;
 public class Platform {
 
     private final static Platform INSTANCE = new Platform();
+    WorldGeneration worldGeneration;
+    ArrayList<TileData> walls;
+    /* for cool effect */
+    boolean pos5 = false;
     private SpriteBatch spriteBatch = new SpriteBatch();
     private EntityCurrentPlayer player;
     private World world;
@@ -32,8 +41,10 @@ public class Platform {
     private FPSLogger logger;
     private ScreenViewport viewport;
     private long startTime;
+    private boolean zoomingIn = true;
 
     public Platform() {
+        worldGeneration = new WorldGeneration();
         renderer = new Box2DDebugRenderer();
         logger = new FPSLogger();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -41,9 +52,15 @@ public class Platform {
 
         world = new World(new Vector2(0, 0), false);
 
+        walls = new ArrayList();
+
         player = new EntityCurrentPlayer(world);
 
-        WorldBodies.createWall(world, 0, 0, 1000, 3);
+        worldGeneration.createWorld();
+        walls.addAll(worldGeneration.getCoords());
+
+        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 400, 5));
+        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 5, 400));
 
         startTime = TimeUtils.millis();
     }
@@ -77,10 +94,38 @@ public class Platform {
         /**
          * Zoom in
          */
-        if (TimeUtils.timeSinceMillis(startTime) > 5000) {
-            if ((int) (camera.zoom * 1000) > 600f) {
-                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.6f, 0.03f);
+        if (zoomingIn) {
+            if (TimeUtils.timeSinceMillis(startTime) > 3000) {
+                if ((int) (camera.zoom * 1000) > 600f) {
+                    camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.6f, 0.03f);
+                } else {
+                    zoomingIn = false;
+                }
             }
+        }
+        /* cool effect */
+//        if (camera.zoom <= 3 && !pos5) {
+//            if (Math.ceil(camera.zoom) != 3) {
+//                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 3f, 0.5f);
+//            } else {
+//
+//                pos5 = true;
+//            }
+//        }
+//        System.out.println((int) camera.zoom);
+//        if (camera.zoom >= -3 && pos5) {
+//            if (Math.floor(camera.zoom) != -3) {
+//                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, -3f, 0.5f);
+//            } else {
+//                pos5 = false;
+//            }
+//        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) {
+            camera.zoom -= 0.2f;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) {
+            camera.zoom += 0.2f;
         }
     }
 
