@@ -30,7 +30,7 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 - [ ] Stats
 - [ ] Items (Upgradable and Collectibles)
 - [x] Crosshair 
-
+- [ ] Player distortion effect
 > also come up with a good name for the game & refactor the placeholder in the src && tidy readme
 
 changelog for daniel
