@@ -43,3 +43,4 @@ changelog for daniel
 - commit #5 as of 28 apr 18 - fixed camera, player now rotates with mouse and played around with light.
 - commit #6 as of 29 apr 18 - added camera zoom with countdown, fixed movement and collision with walls.
 - commit #7 as of 2 may 18 - not working yet errors. updated some item and dist between two bodies
+- commit #8 as of 3 may 18 - changed to using atan^2 instead of atan, attached sprites to bodies && checking surrounding for entites to attack
