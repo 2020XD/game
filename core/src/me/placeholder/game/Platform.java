@@ -17,9 +17,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
-import me.placeholder.game.world.WorldBodies;
 import me.placeholder.game.world.WorldGeneration;
 import me.placeholder.game.world.tile.TileData;
+import me.placeholder.utils.TexturesManager;
 
 import java.util.ArrayList;
 
@@ -59,8 +59,8 @@ public class Platform {
         worldGeneration.createWorld();
         walls.addAll(worldGeneration.getCoords());
 
-        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 400, 5));
-        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 5, 400));
+//        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 400, 5));
+//        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 5, 400));
 
         startTime = TimeUtils.millis();
     }
@@ -77,8 +77,8 @@ public class Platform {
      * TODO: use {@link Interpolation} to do bounceIn
      */
     public void cameraUpdate() {
-        camera.position.x = camera.position.x + (player.getBody().getPosition().x - camera.position.x) * 0.03f + (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / 150;
-        camera.position.y = camera.position.y + (player.getBody().getPosition().y - camera.position.y) * 0.05f + (Gdx.graphics.getHeight() / 2 - Gdx.input.getY()) / 150;
+        camera.position.x = camera.position.x + (player.getBody().getPosition().x - camera.position.x) * 0.02f + (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / 200;
+        camera.position.y = camera.position.y + (player.getBody().getPosition().y - camera.position.y) * 0.04f + (Gdx.graphics.getHeight() / 2 - Gdx.input.getY()) / 200;
         camera.update();
     }
 
@@ -96,8 +96,8 @@ public class Platform {
          */
         if (zoomingIn) {
             if (TimeUtils.timeSinceMillis(startTime) > 3000) {
-                if ((int) (camera.zoom * 1000) > 600f) {
-                    camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.6f, 0.03f);
+                if ((int) (camera.zoom * 1000) > 400f) {
+                    camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.4f, 0.03f);
                 } else {
                     zoomingIn = false;
                 }
@@ -132,6 +132,15 @@ public class Platform {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
+
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.begin();
+        for (TileData tileData : walls) {
+            spriteBatch.draw(TexturesManager.tempTexture, tileData.getPos().x * 64, tileData.getPos().y * 64, 64, 64);
+        }
+        spriteBatch.end();
+
+
         player.render();
         renderer.render(world, camera.combined);
     }

@@ -3,7 +3,7 @@ package me.placeholder.game.world.tile;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by AwfaZ on 4/05/2018.
+ * Created by Adrian on 4/05/2018.
  */
 public class TileData {
 

@@ -59,11 +59,9 @@ public class EntityCurrentPlayer extends Entity {
         rayHandler.updateAndRender();
 
         SpriteBatch spriteBatch = Platform.get().getSpriteBatch();
-
-        spriteBatch.setProjectionMatrix(Platform.get().getCamera().combined);
+        spriteBatch.begin();
         sprite.setPosition(body.getPosition().x - 8, body.getPosition().y - 8);
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
-        spriteBatch.begin();
         sprite.draw(spriteBatch);
         spriteBatch.end();
     }

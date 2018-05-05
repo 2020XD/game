@@ -13,8 +13,12 @@ public class TexturesManager {
     public static Pixmap crosshair1Texture;
     public static Pixmap crosshair2Texture;
 
+    public static Texture tempTexture;
+
 
     static {
+        tempTexture = new Texture("textures/temp.png");
+
         playButtonTexture = new Texture("textures/gui/playbutton.png");
         playerTexture = new Texture("textures/players/Untitled.png");
 //        crosshair1Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair1.png"));
