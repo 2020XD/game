@@ -13,7 +13,7 @@ First LibGdx Game made using https://libgdx.badlogicgames.com/ and my fake frien
 - [ ] Inputs (Combat)
 - [ ] World
 - [ ] Procedural Generation for world
-- [ ] Main Screen
+- [ ] Main Screen (wd effect?)
 - [ ] Option Screen
 - [ ] Play Screen
 - [ ] Settings
