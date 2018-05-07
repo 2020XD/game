@@ -17,7 +17,7 @@ public class WorldGeneration {
     public void createWorld() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                coords[i][j] = TileType.WALL;
+                coords[i][j] = TileType.FLOOR;
             }
         }
     }
@@ -26,9 +26,9 @@ public class WorldGeneration {
         ArrayList<TileData> tiles = new ArrayList();
         for (int i = 0; i < coords.length; i++) {
             for (int j = 0; j < coords[i].length; j++) {
-                if (coords[i][j] != TileType.NONE) {
-                    tiles.add(new TileData(new Vector2(i, j), coords[i][j]));
-                }
+//                if (coords[i][j] != TileType.NONE) {
+                tiles.add(new TileData(new Vector2(i, j), coords[i][j]));
+//                }
             }
         }
         return tiles;
