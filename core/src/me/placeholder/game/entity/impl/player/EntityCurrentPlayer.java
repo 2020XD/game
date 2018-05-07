@@ -20,7 +20,7 @@ import me.placeholder.utils.TexturesManager;
  */
 public class EntityCurrentPlayer extends Entity {
 
-    private final Sprite sprite = new Sprite(TexturesManager.playerTexture, 16, 16);
+    private Sprite sprite = new Sprite(TexturesManager.tileRegions[0][0].getTexture(), 32, 32);
     private Vector2 delta;
     private RayHandler rayHandler;
 
@@ -30,7 +30,7 @@ public class EntityCurrentPlayer extends Entity {
 
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
-        PointLight pointLight = new PointLight(rayHandler, 50, Color.WHITE, stats.getAttackRadius(), 0, 0);
+        PointLight pointLight = new PointLight(rayHandler, 100, Color.WHITE, stats.getAttackRadius() * 10, 0, 0);
         pointLight.attachToBody(body);
     }
 
@@ -86,6 +86,13 @@ public class EntityCurrentPlayer extends Entity {
             delta.x += stats.getMovementSpeed();
         }
         body.setLinearVelocity(delta);
+        if (delta.isZero()) {
+            System.out.println("DELTA IS ZERO");
+            sprite.setTexture(TexturesManager.tileRegions[0][0].getTexture());
+        } else {
+            System.out.println("DELTA IS NOT ZERO");
+            sprite.setTexture(TexturesManager.tileRegions[2][0].getTexture());
+        }
     }
 
     public void lookMouse(float mouseX, float mouseY) {
