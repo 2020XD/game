@@ -1,8 +1,8 @@
-package me.placeholder.game.world.tile;
+package me.placeholder.game.world.types.tile;
 
 /**
  * Created by AwfaZ on 4/05/2018.
  */
 public enum TileType {
-    WALL, DOOR, NONE
+
 }

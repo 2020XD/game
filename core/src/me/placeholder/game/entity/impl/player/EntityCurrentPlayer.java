@@ -1,6 +1,6 @@
 package me.placeholder.game.entity.impl.player;
 
-import box2dLight.PointLight;
+import box2dLight.ConeLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,17 +20,17 @@ import me.placeholder.utils.TexturesManager;
  */
 public class EntityCurrentPlayer extends Entity {
 
-    private final Sprite sprite = new Sprite(TexturesManager.playerTexture, 16, 16);
+    private final Sprite sprite = new Sprite(TexturesManager.playerTexture);
     private Vector2 delta;
     private RayHandler rayHandler;
 
     public EntityCurrentPlayer(World world) {
-        createBody(this, world, 8, 8);
+        createBody(this, world, 20, 9);
         delta = new Vector2();
 
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
-        PointLight pointLight = new PointLight(rayHandler, 50, Color.WHITE, stats.getAttackRadius(), 0, 0);
+        ConeLight pointLight = new ConeLight(rayHandler, 1000, Color.WHITE, 300, 0, 0, 0, 30);
         pointLight.attachToBody(body);
     }
 
@@ -59,9 +59,7 @@ public class EntityCurrentPlayer extends Entity {
         rayHandler.updateAndRender();
 
         SpriteBatch spriteBatch = Platform.get().getSpriteBatch();
-
-        spriteBatch.setProjectionMatrix(Platform.get().getCamera().combined);
-        sprite.setPosition(body.getPosition().x - 8, body.getPosition().y - 8);
+        sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         spriteBatch.begin();
         sprite.draw(spriteBatch);

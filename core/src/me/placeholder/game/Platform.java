@@ -2,10 +2,12 @@ package me.placeholder.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -17,9 +19,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
-import me.placeholder.game.world.WorldBodies;
 import me.placeholder.game.world.WorldGeneration;
-import me.placeholder.game.world.tile.TileData;
+import me.placeholder.game.world.types.wall.WallData;
+import me.placeholder.utils.TexturesManager;
 
 import java.util.ArrayList;
 
@@ -29,10 +31,9 @@ import java.util.ArrayList;
 public class Platform {
 
     private final static Platform INSTANCE = new Platform();
-    WorldGeneration worldGeneration;
-    ArrayList<TileData> walls;
-    /* for cool effect */
-    boolean pos5 = false;
+    ShapeRenderer myRect = new ShapeRenderer();
+    private WorldGeneration worldGeneration;
+    private ArrayList<WallData> walls;
     private SpriteBatch spriteBatch = new SpriteBatch();
     private EntityCurrentPlayer player;
     private World world;
@@ -59,8 +60,7 @@ public class Platform {
         worldGeneration.createWorld();
         walls.addAll(worldGeneration.getCoords());
 
-        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 400, 5));
-        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 5, 400));
+//        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 160, w.getPos().y * 160, w.getLength() * 10, w.getWidth()));
 
         startTime = TimeUtils.millis();
     }
@@ -95,7 +95,7 @@ public class Platform {
          * Zoom in
          */
         if (zoomingIn) {
-            if (TimeUtils.timeSinceMillis(startTime) > 3000) {
+            if (TimeUtils.timeSinceMillis(startTime) > 1000) {
                 if ((int) (camera.zoom * 1000) > 600f) {
                     camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.6f, 0.03f);
                 } else {
@@ -103,23 +103,6 @@ public class Platform {
                 }
             }
         }
-        /* cool effect */
-//        if (camera.zoom <= 3 && !pos5) {
-//            if (Math.ceil(camera.zoom) != 3) {
-//                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 3f, 0.5f);
-//            } else {
-//
-//                pos5 = true;
-//            }
-//        }
-//        System.out.println((int) camera.zoom);
-//        if (camera.zoom >= -3 && pos5) {
-//            if (Math.floor(camera.zoom) != -3) {
-//                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, -3f, 0.5f);
-//            } else {
-//                pos5 = false;
-//            }
-//        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) {
             camera.zoom -= 0.2f;
@@ -132,6 +115,30 @@ public class Platform {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
+        spriteBatch.setProjectionMatrix(camera.combined);
+        myRect.setColor(Color.BLACK);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        myRect.begin(ShapeRenderer.ShapeType.Filled);
+        myRect.rect(
+                0, 0,
+                Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight(),
+                Color.valueOf("FF0000"), Color.valueOf("FF0000"), Color.valueOf("FFFFFF"), Color.valueOf("FFFFFF")
+        );
+        myRect.end();
+        spriteBatch.begin();
+        spriteBatch.disableBlending();
+        int x = 0, y = 0;
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                spriteBatch.draw(TexturesManager.floorTexture, x * 16, y * 16);
+                x += 8;
+            }
+            y += 8;
+            x = 0;
+        }
+        spriteBatch.enableBlending();
+        spriteBatch.end();
         player.render();
         renderer.render(world, camera.combined);
     }

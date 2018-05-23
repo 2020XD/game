@@ -10,13 +10,15 @@ public class TexturesManager {
 
     public static Texture playButtonTexture;
     public static Texture playerTexture;
+    public static Texture floorTexture;
     public static Pixmap crosshair1Texture;
     public static Pixmap crosshair2Texture;
 
 
     static {
         playButtonTexture = new Texture("textures/gui/playbutton.png");
-        playerTexture = new Texture("textures/players/Untitled.png");
+        playerTexture = new Texture("textures/players/dude.png");
+        floorTexture = new Texture("textures/ground.png");
 //        crosshair1Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair1.png"));
 //        crosshair2Texture = new Pixmap(Gdx.files.internal("textures/gui/crosshair2.png"));
 

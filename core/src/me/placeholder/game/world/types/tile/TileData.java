@@ -1,4 +1,4 @@
-package me.placeholder.game.world.tile;
+package me.placeholder.game.world.types.tile;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,18 +8,17 @@ import com.badlogic.gdx.math.Vector2;
 public class TileData {
 
     private Vector2 pos;
-    private TileType type;
 
-    public TileData(Vector2 pos, TileType type) {
+    private int length;
+    private int width;
+
+    public TileData(Vector2 pos) {
         this.pos = pos;
-        this.type = type;
+        length = 16;
+        width = 16;
     }
 
     public Vector2 getPos() {
         return pos;
-    }
-
-    public TileType getType() {
-        return type;
     }
 }
