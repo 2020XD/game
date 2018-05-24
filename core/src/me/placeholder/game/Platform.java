@@ -2,10 +2,12 @@ package me.placeholder.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -31,8 +33,8 @@ public class Platform {
     private final static Platform INSTANCE = new Platform();
     WorldGeneration worldGeneration;
     ArrayList<TileData> walls;
-    /* for cool effect */
-    boolean pos5 = false;
+    ShapeRenderer render
+            = new ShapeRenderer();
     private SpriteBatch spriteBatch = new SpriteBatch();
     private EntityCurrentPlayer player;
     private World world;
@@ -95,7 +97,7 @@ public class Platform {
          * Zoom in
          */
         if (zoomingIn) {
-            if (TimeUtils.timeSinceMillis(startTime) > 3000) {
+            if (TimeUtils.timeSinceMillis(startTime) > 1000) {
                 if ((int) (camera.zoom * 1000) > 400f) {
                     camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.4f, 0.03f);
                 } else {
@@ -103,24 +105,6 @@ public class Platform {
                 }
             }
         }
-        /* cool effect */
-//        if (camera.zoom <= 3 && !pos5) {
-//            if (Math.ceil(camera.zoom) != 3) {
-//                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 3f, 0.5f);
-//            } else {
-//
-//                pos5 = true;
-//            }
-//        }
-//        System.out.println((int) camera.zoom);
-//        if (camera.zoom >= -3 && pos5) {
-//            if (Math.floor(camera.zoom) != -3) {
-//                camera.zoom = Interpolation.bounceIn.apply(camera.zoom, -3f, 0.5f);
-//            } else {
-//                pos5 = false;
-//            }
-//        }
-
         if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) {
             camera.zoom -= 0.2f;
         }
@@ -133,14 +117,18 @@ public class Platform {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
+        render.begin(ShapeRenderer.ShapeType.Filled);
+        render.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.valueOf("FFFFFF"), Color.valueOf("FFFFFF"), Color.valueOf("FF0000"), Color.valueOf("FF0000"));
+        render.end();
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
-        for (TileData tileData : walls) {
-            spriteBatch.draw(TexturesManager.tempTexture, tileData.getPos().x * 64, tileData.getPos().y * 64, 64, 64);
+        for (int j = 0; j < 20; j++) {
+
+            for (int i = 0; i < 20; i++) {
+                spriteBatch.draw(TexturesManager.floorTexture, i * 128, j * 128);
+            }
         }
         spriteBatch.end();
-
-
         player.render();
         renderer.render(world, camera.combined);
     }
