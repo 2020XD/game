@@ -8,6 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,7 +25,6 @@ import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldGeneration;
 import me.placeholder.game.world.tile.TileData;
-import me.placeholder.utils.TexturesManager;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,9 @@ public class Platform {
     ArrayList<TileData> walls;
     ShapeRenderer render
             = new ShapeRenderer();
+    TiledMap map;
+    TiledMapRenderer mapRenderer;
+    float amb = 0.5f;
     private SpriteBatch spriteBatch = new SpriteBatch();
     private EntityCurrentPlayer player;
     private World world;
@@ -65,6 +71,9 @@ public class Platform {
 //        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 5, 400));
 
         startTime = TimeUtils.millis();
+
+        map = new TmxMapLoader().load("textures/testmap.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
     }
 
     public static Platform get() {
@@ -98,39 +107,37 @@ public class Platform {
          */
         if (zoomingIn) {
             if (TimeUtils.timeSinceMillis(startTime) > 1000) {
-                if ((int) (camera.zoom * 1000) > 400f) {
+                if ((int) (camera.zoom * 1000) > 400f)
                     camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.4f, 0.03f);
-                } else {
-                    zoomingIn = false;
+                else zoomingIn = false;
+                if ((int) (amb * 100) > 10) {
+                    amb = Interpolation.bounceIn.apply(amb, 0.1f, 0.03f);
+                    player.rayHandler.setAmbientLight(amb);
                 }
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) {
-            camera.zoom -= 0.2f;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) {
-            camera.zoom += 0.2f;
-        }
+        if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) camera.zoom -= 0.2f;
+        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) camera.zoom += 0.2f;
     }
 
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
-
         render.begin(ShapeRenderer.ShapeType.Filled);
-        render.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.valueOf("FFFFFF"), Color.valueOf("FFFFFF"), Color.valueOf("FF0000"), Color.valueOf("FF0000"));
+        render.rect(0, 0, viewport.getScreenWidth(), viewport.getScreenHeight(), Color.valueOf("FFFFFF"), Color.valueOf("FFFFFF"), Color.valueOf("FF0000"), Color.valueOf("FF0000"));
         render.end();
         spriteBatch.setProjectionMatrix(camera.combined);
+        mapRenderer.setView(camera);
+        mapRenderer.render();
         spriteBatch.begin();
-        for (int j = 0; j < 20; j++) {
-
-            for (int i = 0; i < 20; i++) {
-                spriteBatch.draw(TexturesManager.floorTexture, i * 128, j * 128);
-            }
-        }
+//        for (int j = 0; j < 20; j++) {
+//            for (int i = 0; i < 20; i++) {
+//                spriteBatch.draw(TexturesManager.floorTexture, i * 128, j * 128);
+//            }
+//        }
         spriteBatch.end();
         player.render();
-        renderer.render(world, camera.combined);
+//        renderer.render(world, camera.combined);
     }
 
     public void resize(int width, int height) {

@@ -28,5 +28,4 @@ public class WorldBodies {
         body.setUserData(entity);
         return body;
     }
-
 }

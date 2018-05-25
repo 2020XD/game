@@ -20,9 +20,9 @@ import me.placeholder.utils.TexturesManager;
  */
 public class EntityCurrentPlayer extends Entity {
 
+    public RayHandler rayHandler;
     private Sprite sprite = new Sprite(TexturesManager.playerTexture);
     private Vector2 delta;
-    private RayHandler rayHandler;
 
     public EntityCurrentPlayer(World world) {
         createBody(this, world, 20, 9);
@@ -30,12 +30,13 @@ public class EntityCurrentPlayer extends Entity {
 
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
-        ConeLight pointLight = new ConeLight(rayHandler, 100, Color.WHITE, stats.getAttackRadius() * 10, 0, 0, 0, 30);
+        ConeLight pointLight = new ConeLight(rayHandler, 3, Color.valueOf("646464"), stats.getAttackRadius() * 10, 0, 0, 0, 30);
         pointLight.attachToBody(body);
     }
 
     @Override
     public void attack() {
+
         for (Body body : Platform.get().getEntites()) {
             Entity entity = (Entity) body.getUserData();
             if (entity == this) {
