@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
+import me.placeholder.game.world.WorldBodies;
 import me.placeholder.game.world.WorldGeneration;
 import me.placeholder.game.world.tile.TileData;
 
@@ -60,12 +62,12 @@ public class Platform {
 
         world = new World(new Vector2(0, 0), false);
 
-        walls = new ArrayList();
+//        walls = new ArrayList();
 
         player = new EntityCurrentPlayer(world);
 
-        worldGeneration.createWorld();
-        walls.addAll(worldGeneration.getCoords());
+//        worldGeneration.createWorld();
+//        walls.addAll(worldGeneration.getCoords());
 
 //        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 400, 5));
 //        walls.forEach(w -> WorldBodies.createWall(world, w.getPos().x * 400, w.getPos().y * 400, 5, 400));
@@ -74,6 +76,16 @@ public class Platform {
 
         map = new TmxMapLoader().load("textures/testmap.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
+
+        MapProperties p = map.getProperties();
+
+        float width = p.get("width", Integer.class) * p.get("tilewidth", Integer.class) / 1.5f;
+        float height = p.get("height", Integer.class) * p.get("tileheight", Integer.class) / 1.5f;
+
+        WorldBodies.createWall(world, 0, -height, width, -10);
+        WorldBodies.createWall(world, -width, 0, 10, height);
+        WorldBodies.createWall(world, 0, height, width, 10);
+        WorldBodies.createWall(world, width, 0, 10, height);
     }
 
     public static Platform get() {
@@ -116,8 +128,8 @@ public class Platform {
                 }
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) camera.zoom -= 0.2f;
-        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) camera.zoom += 0.2f;
+        if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) camera.zoom -= 0.05f;
+        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) camera.zoom += 0.05f;
     }
 
     public void render() {
@@ -126,6 +138,7 @@ public class Platform {
         render.begin(ShapeRenderer.ShapeType.Filled);
         render.rect(0, 0, viewport.getScreenWidth(), viewport.getScreenHeight(), Color.valueOf("FFFFFF"), Color.valueOf("FFFFFF"), Color.valueOf("FF0000"), Color.valueOf("FF0000"));
         render.end();
+
         spriteBatch.setProjectionMatrix(camera.combined);
         mapRenderer.setView(camera);
         mapRenderer.render();
@@ -137,7 +150,7 @@ public class Platform {
 //        }
         spriteBatch.end();
         player.render();
-//        renderer.render(world, camera.combined);
+        renderer.render(world, camera.combined);
     }
 
     public void resize(int width, int height) {
@@ -149,9 +162,8 @@ public class Platform {
         Array<Body> entityBodies = new Array<Body>();
         world.getBodies(worldBodies);
         for (Body body : worldBodies)
-            if (body.getUserData() instanceof Entity) {
+            if (body.getUserData() instanceof Entity)
                 entityBodies.add(body);
-            }
         return entityBodies;
     }
 
@@ -162,4 +174,5 @@ public class Platform {
     public OrthographicCamera getCamera() {
         return camera;
     }
+
 }

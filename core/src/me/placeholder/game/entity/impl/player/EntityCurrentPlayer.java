@@ -21,7 +21,8 @@ import me.placeholder.utils.TexturesManager;
 public class EntityCurrentPlayer extends Entity {
 
     public RayHandler rayHandler;
-    private Sprite sprite = new Sprite(TexturesManager.playerTexture);
+    private Cycle cycle = Cycle.STATIC;
+    private Sprite sprite;
     private Vector2 delta;
 
     public EntityCurrentPlayer(World world) {
@@ -32,6 +33,8 @@ public class EntityCurrentPlayer extends Entity {
         rayHandler.setAmbientLight(0.5f);
         ConeLight pointLight = new ConeLight(rayHandler, 3, Color.valueOf("646464"), stats.getAttackRadius() * 10, 0, 0, 0, 30);
         pointLight.attachToBody(body);
+
+        sprite = cycle.sprite;
     }
 
     @Override
@@ -61,6 +64,7 @@ public class EntityCurrentPlayer extends Entity {
 
         SpriteBatch spriteBatch = Platform.get().getSpriteBatch();
         spriteBatch.begin();
+
         sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
         sprite.draw(spriteBatch);
@@ -91,5 +95,15 @@ public class EntityCurrentPlayer extends Entity {
 
     public void lookMouse(float mouseX, float mouseY) {
         setAngle((float) Math.atan2((mouseY - body.getPosition().y), (mouseX - body.getPosition().x)));
+    }
+
+    enum Cycle {
+        STATIC(new Sprite(TexturesManager.playerTexture)), RUNNING(new Sprite(TexturesManager.playerTexture));
+
+        Sprite sprite;
+
+        Cycle(Sprite sprite) {
+            this.sprite = sprite;
+        }
     }
 }
