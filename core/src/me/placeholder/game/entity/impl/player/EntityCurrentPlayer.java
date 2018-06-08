@@ -5,6 +5,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -31,7 +32,7 @@ public class EntityCurrentPlayer extends Entity {
 
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.5f);
-        ConeLight pointLight = new ConeLight(rayHandler, 3, Color.valueOf("646464"), stats.getAttackRadius() * 10, 0, 0, 0, 30);
+        ConeLight pointLight = new ConeLight(rayHandler, 50, Color.valueOf("646464"), stats.getAttackRadius() * 10, 0, 0, 0, 30);
         pointLight.attachToBody(body);
 
         sprite = cycle.sprite;
@@ -39,7 +40,6 @@ public class EntityCurrentPlayer extends Entity {
 
     @Override
     public void attack() {
-
         for (Body body : Platform.get().getEntites()) {
             Entity entity = (Entity) body.getUserData();
             if (entity == this) {
@@ -59,7 +59,8 @@ public class EntityCurrentPlayer extends Entity {
 
     @Override
     public void render() {
-        rayHandler.setCombinedMatrix(Platform.get().getCamera());
+        OrthographicCamera camera = Platform.get().getCamera();
+        rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
 
         SpriteBatch spriteBatch = Platform.get().getSpriteBatch();

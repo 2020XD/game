@@ -1,6 +1,8 @@
 package me.placeholder.game.world.rain;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
@@ -10,27 +12,26 @@ import java.util.Random;
  */
 public class RainGeneration {
 
-    int sizeX;
-    int sizeY;
     private Array<Rain> rains = new Array();
     private Random random = new Random();
+    private SpriteBatch spriteBatch = new SpriteBatch();
 
-    public RainGeneration(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                rains.add(new Rain(new Vector2(i, j)));
+    public RainGeneration() {
+        for (int i = 0; i < Gdx.graphics.getWidth() / 16; i++) {
+            for (int j = 0; j < Gdx.graphics.getHeight() / 16; j++) {
+                rains.add(new Rain(new Vector3(i * 16, j * 16, 0)));
             }
         }
     }
-
 
     public void update() {
     }
 
     public void render() {
-
+        spriteBatch.begin();
+        for (Rain rain : rains) {
+            spriteBatch.draw(rain.getRainCycle().texture, rain.getPos().x, rain.getPos().y);
+        }
+        spriteBatch.end();
     }
 }

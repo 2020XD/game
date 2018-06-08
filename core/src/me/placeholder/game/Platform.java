@@ -26,6 +26,7 @@ import me.placeholder.game.entity.Entity;
 import me.placeholder.game.entity.impl.player.EntityCurrentPlayer;
 import me.placeholder.game.world.WorldBodies;
 import me.placeholder.game.world.WorldGeneration;
+import me.placeholder.game.world.rain.RainGeneration;
 import me.placeholder.game.world.tile.TileData;
 
 import java.util.ArrayList;
@@ -38,8 +39,7 @@ public class Platform {
     private final static Platform INSTANCE = new Platform();
     WorldGeneration worldGeneration;
     ArrayList<TileData> walls;
-    ShapeRenderer render
-            = new ShapeRenderer();
+    ShapeRenderer render = new ShapeRenderer();
     TiledMap map;
     TiledMapRenderer mapRenderer;
     float amb = 0.5f;
@@ -52,6 +52,7 @@ public class Platform {
     private ScreenViewport viewport;
     private long startTime;
     private boolean zoomingIn = true;
+    boolean initRain = false;
 
     public Platform() {
         worldGeneration = new WorldGeneration();
@@ -88,6 +89,8 @@ public class Platform {
         WorldBodies.createWall(world, width, 0, 10, height);
     }
 
+    private RainGeneration rain;
+
     public static Platform get() {
         return INSTANCE;
     }
@@ -103,6 +106,10 @@ public class Platform {
         camera.position.x = camera.position.x + (player.getBody().getPosition().x - camera.position.x) * 0.02f + (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / 200;
         camera.position.y = camera.position.y + (player.getBody().getPosition().y - camera.position.y) * 0.04f + (Gdx.graphics.getHeight() / 2 - Gdx.input.getY()) / 200;
         camera.update();
+    }
+
+    public EntityCurrentPlayer getPlayer() {
+        return player;
     }
 
     public void update() {
@@ -127,6 +134,13 @@ public class Platform {
                     player.rayHandler.setAmbientLight(amb);
                 }
             }
+        } else if (!initRain) {
+            rain = new RainGeneration();
+            initRain = true;
+        }
+
+        if (initRain) {
+            rain.update();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.EQUALS)) camera.zoom -= 0.05f;
         if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) camera.zoom += 0.05f;
@@ -138,17 +152,12 @@ public class Platform {
         render.begin(ShapeRenderer.ShapeType.Filled);
         render.rect(0, 0, viewport.getScreenWidth(), viewport.getScreenHeight(), Color.valueOf("FFFFFF"), Color.valueOf("FFFFFF"), Color.valueOf("FF0000"), Color.valueOf("FF0000"));
         render.end();
-
+        if (initRain) {
+            rain.render();
+        }
         spriteBatch.setProjectionMatrix(camera.combined);
         mapRenderer.setView(camera);
         mapRenderer.render();
-        spriteBatch.begin();
-//        for (int j = 0; j < 20; j++) {
-//            for (int i = 0; i < 20; i++) {
-//                spriteBatch.draw(TexturesManager.floorTexture, i * 128, j * 128);
-//            }
-//        }
-        spriteBatch.end();
         player.render();
         renderer.render(world, camera.combined);
     }
@@ -158,8 +167,8 @@ public class Platform {
     }
 
     public Array<Body> getEntites() {
-        Array<Body> worldBodies = new Array<Body>();
-        Array<Body> entityBodies = new Array<Body>();
+        Array<Body> worldBodies = new Array();
+        Array<Body> entityBodies = new Array();
         world.getBodies(worldBodies);
         for (Body body : worldBodies)
             if (body.getUserData() instanceof Entity)
