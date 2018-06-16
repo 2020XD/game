@@ -130,8 +130,8 @@ public class Platform {
                     camera.zoom = Interpolation.bounceIn.apply(camera.zoom, 0.4f, 0.03f);
                 else zoomingIn = false;
                 if ((int) (amb * 100) > 10) {
-                    amb = Interpolation.bounceIn.apply(amb, 0.1f, 0.03f);
-                    player.rayHandler.setAmbientLight(amb);
+//                    amb = Interpolation.bounceIn.apply(amb, 0.1f, 0.03f);
+//                    player.rayHandler.setAmbientLight(amb);
                 }
             }
         } else if (!initRain) {
